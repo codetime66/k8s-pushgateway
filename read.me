@@ -1,0 +1,14 @@
+#
+docker run -d -p 9091:9091 prom/pushgateway
+#
+docker run -d -p 9090:9090 -v /Users/carlosandrefernandes/projects/k8s-pushgateway/prometheus/:/etc/prometheus/ prom/prometheus:v2.4.3
+#
+echo "cpu_utilization 20.25" | curl --data-binary @- http://localhost:9091/metrics/job/my_custom_metrics/instance/10.20.0.1:9000/provider/hetzner
+
+url http://localhost:9091/metrics/job/my_some_job/instance/mysome_instance --data-binary @- << EOF
+  # TYPE some_metric counter
+  some_metric{label="val1"} 42
+  # TYPE another_metric gauge
+  # HELP another_metric Just an example.
+  another_metric 2398.283
+  EOF
